@@ -5,10 +5,32 @@ appId: com.agentic.maestrotesting
 
 - launchApp
 
+# Handle Expo Dev Client launcher - tap on the recently opened project
+- runFlow:
+    when:
+      visible: "No development servers found"
+    commands:
+      - tapOn: "agentic-maestro-testing"
+
+# Dismiss developer menu modal if it appears
+- runFlow:
+    when:
+      visible: "Continue"
+    commands:
+      - tapOn: "Continue"
+
+# Dismiss dev tools menu if it appears (tap outside or X button)
+- runFlow:
+    when:
+      visible: "Toggle performance monitor"
+    commands:
+      - tapOn:
+          point: "50%,10%"
+
 # Wait for app to load
 - extendedWaitUntil:
     visible: "Counter App"
-    timeout: 10000
+    timeout: 15000
 
 # Verify initial state
 - assertVisible: "Counter App"
