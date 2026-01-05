@@ -2,8 +2,11 @@ import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
+const STEP_OPTIONS = [1, 5, 10];
+
 export default function App() {
   const [count, setCount] = useState(0);
+  const [stepSize, setStepSize] = useState(1);
 
   return (
     <View style={styles.container}>
@@ -16,10 +19,10 @@ export default function App() {
       <View style={styles.buttonRow}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => setCount(count - 1)}
+          onPress={() => setCount(count - stepSize)}
           testID="decrement-button"
         >
-          <Text style={styles.buttonText}>-</Text>
+          <Text style={styles.buttonText}>-{stepSize}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -32,11 +35,37 @@ export default function App() {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => setCount(count + 1)}
+          onPress={() => setCount(count + stepSize)}
           testID="increment-button"
         >
-          <Text style={styles.buttonText}>+</Text>
+          <Text style={styles.buttonText}>+{stepSize}</Text>
         </TouchableOpacity>
+      </View>
+
+      <View style={styles.stepContainer}>
+        <Text style={styles.stepLabel}>Step Size:</Text>
+        <View style={styles.stepButtonRow}>
+          {STEP_OPTIONS.map((step) => (
+            <TouchableOpacity
+              key={step}
+              style={[
+                styles.stepButton,
+                stepSize === step && styles.stepButtonActive,
+              ]}
+              onPress={() => setStepSize(step)}
+              testID={`step-button-${step}`}
+            >
+              <Text
+                style={[
+                  styles.stepButtonText,
+                  stepSize === step && styles.stepButtonTextActive,
+                ]}
+              >
+                {step}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
       </View>
 
       <StatusBar style="auto" />
@@ -88,5 +117,37 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 24,
     fontWeight: '600',
+  },
+  stepContainer: {
+    marginTop: 40,
+    alignItems: 'center',
+  },
+  stepLabel: {
+    fontSize: 16,
+    color: '#666',
+    marginBottom: 10,
+  },
+  stepButtonRow: {
+    flexDirection: 'row',
+    gap: 10,
+  },
+  stepButton: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 20,
+    borderWidth: 2,
+    borderColor: '#007AFF',
+    backgroundColor: 'white',
+  },
+  stepButtonActive: {
+    backgroundColor: '#007AFF',
+  },
+  stepButtonText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#007AFF',
+  },
+  stepButtonTextActive: {
+    color: 'white',
   },
 });

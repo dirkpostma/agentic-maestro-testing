@@ -1,7 +1,7 @@
 appId: com.agentic.maestrotesting
 ---
 # Counter App E2E Test Flow
-# Tests basic counter functionality
+# Tests basic counter functionality and custom step size feature
 
 - launchApp
 
@@ -36,7 +36,16 @@ appId: com.agentic.maestrotesting
 - assertVisible: "Counter App"
 - assertVisible: "Count: 0"
 
-# Test increment
+# Verify step size selector exists
+- assertVisible: "Step Size:"
+- assertVisible:
+    id: "step-button-1"
+- assertVisible:
+    id: "step-button-5"
+- assertVisible:
+    id: "step-button-10"
+
+# Test increment with default step size (1)
 - tapOn:
     id: "increment-button"
 - assertVisible: "Count: 1"
@@ -49,30 +58,55 @@ appId: com.agentic.maestrotesting
     id: "increment-button"
 - assertVisible: "Count: 3"
 
-# Test decrement
+# Test decrement with step size 1
 - tapOn:
     id: "decrement-button"
 - assertVisible: "Count: 2"
 
+# Switch to step size 5
+- tapOn:
+    id: "step-button-5"
+
+# Test increment with step size 5 (2 + 5 = 7)
+- tapOn:
+    id: "increment-button"
+- assertVisible: "Count: 7"
+
+# Test decrement with step size 5 (7 - 5 = 2)
 - tapOn:
     id: "decrement-button"
-- assertVisible: "Count: 1"
+- assertVisible: "Count: 2"
 
-# Test reset
+# Switch to step size 10
+- tapOn:
+    id: "step-button-10"
+
+# Test increment with step size 10 (2 + 10 = 12)
+- tapOn:
+    id: "increment-button"
+- assertVisible: "Count: 12"
+
+# Test decrement with step size 10 (12 - 10 = 2)
+- tapOn:
+    id: "decrement-button"
+- assertVisible: "Count: 2"
+
+# Test reset still works
 - tapOn:
     id: "reset-button"
 - assertVisible: "Count: 0"
 
-# Test decrement below zero
+# Switch back to step size 1 and verify
 - tapOn:
-    id: "decrement-button"
-- assertVisible: "Count: -1"
-
-# Reset and increment again to verify state
-- tapOn:
-    id: "reset-button"
-- assertVisible: "Count: 0"
-
+    id: "step-button-1"
 - tapOn:
     id: "increment-button"
 - assertVisible: "Count: 1"
+
+# Test decrement below zero with step size 1
+- tapOn:
+    id: "decrement-button"
+- assertVisible: "Count: 0"
+- tapOn:
+    id: "decrement-button"
+- assertVisible: "Count: -1"
