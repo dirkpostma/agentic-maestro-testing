@@ -1,0 +1,78 @@
+appId: com.agentic.maestrotesting
+---
+# Counter App E2E Test Flow
+# Tests basic counter functionality
+
+- launchApp
+
+# Handle Expo Dev Client launcher - tap on the recently opened project
+- runFlow:
+    when:
+      visible: "No development servers found"
+    commands:
+      - tapOn: "agentic-maestro-testing"
+
+# Dismiss developer menu modal if it appears
+- runFlow:
+    when:
+      visible: "Continue"
+    commands:
+      - tapOn: "Continue"
+
+# Dismiss dev tools menu if it appears (tap outside or X button)
+- runFlow:
+    when:
+      visible: "Toggle performance monitor"
+    commands:
+      - tapOn:
+          point: "50%,10%"
+
+# Wait for app to load
+- extendedWaitUntil:
+    visible: "Counter App"
+    timeout: 15000
+
+# Verify initial state
+- assertVisible: "Counter App"
+- assertVisible: "Count: 0"
+
+# Test increment
+- tapOn:
+    id: "increment-button"
+- assertVisible: "Count: 1"
+
+- tapOn:
+    id: "increment-button"
+- assertVisible: "Count: 2"
+
+- tapOn:
+    id: "increment-button"
+- assertVisible: "Count: 3"
+
+# Test decrement
+- tapOn:
+    id: "decrement-button"
+- assertVisible: "Count: 2"
+
+- tapOn:
+    id: "decrement-button"
+- assertVisible: "Count: 1"
+
+# Test reset
+- tapOn:
+    id: "reset-button"
+- assertVisible: "Count: 0"
+
+# Test decrement below zero
+- tapOn:
+    id: "decrement-button"
+- assertVisible: "Count: -1"
+
+# Reset and increment again to verify state
+- tapOn:
+    id: "reset-button"
+- assertVisible: "Count: 0"
+
+- tapOn:
+    id: "increment-button"
+- assertVisible: "Count: 1"
