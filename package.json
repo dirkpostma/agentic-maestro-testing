@@ -7,7 +7,7 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "test:e2e": "maestro test .maestro && cp -r $(ls -td ~/.maestro/tests/* | head -1) ./test-results/latest"
+    "test:e2e": "maestro test .maestro --debug-output test-results"
   },
   "dependencies": {
     "expo": "~54.0.30",
