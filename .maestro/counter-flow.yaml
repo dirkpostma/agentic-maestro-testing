@@ -1,7 +1,7 @@
 appId: com.agentic.maestrotesting
 ---
 # Counter App E2E Test Flow
-# Tests basic counter functionality
+# Tests basic counter functionality and history feature
 
 - launchApp
 
@@ -36,10 +36,16 @@ appId: com.agentic.maestrotesting
 - assertVisible: "Counter App"
 - assertVisible: "Count: 0"
 
-# Test increment
+# Verify history section exists and is empty
+- assertVisible: "History"
+- assertVisible: "No history yet"
+
+# Test increment and verify history entry appears
 - tapOn:
     id: "increment-button"
 - assertVisible: "Count: 1"
+- assertVisible:
+    id: "history-entry-0"
 
 - tapOn:
     id: "increment-button"
@@ -68,7 +74,12 @@ appId: com.agentic.maestrotesting
     id: "decrement-button"
 - assertVisible: "Count: -1"
 
-# Reset and increment again to verify state
+# Test clear history button
+- tapOn:
+    id: "clear-history-button"
+- assertVisible: "No history yet"
+
+# Verify counter still works after clearing history
 - tapOn:
     id: "reset-button"
 - assertVisible: "Count: 0"
@@ -76,3 +87,5 @@ appId: com.agentic.maestrotesting
 - tapOn:
     id: "increment-button"
 - assertVisible: "Count: 1"
+- assertVisible:
+    id: "history-entry-0"
